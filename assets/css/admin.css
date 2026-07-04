@@ -1,0 +1,211 @@
+/* Cart Abandonment Recovery Pro – Admin Styles */
+:root {
+  --car-primary: #6c63ff;
+  --car-primary-dark: #574fd6;
+  --car-success: #27ae60;
+  --car-danger: #e74c3c;
+  --car-warning: #f39c12;
+  --car-info: #3498db;
+  --car-bg: #f0f2f5;
+  --car-card-bg: #ffffff;
+  --car-border: #e1e4e8;
+  --car-text: #2d3748;
+  --car-text-muted: #718096;
+  --car-radius: 10px;
+  --car-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+
+.car-admin-wrap { background: var(--car-bg); margin: -10px -20px 0; padding: 20px; min-height: 100vh; }
+
+/* Header */
+.car-admin-header { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 16px 24px; border-radius: var(--car-radius); margin-bottom: 8px; box-shadow: var(--car-shadow); }
+.car-admin-title { margin: 0; font-size: 22px; color: var(--car-text); display: flex; align-items: center; gap: 10px; }
+.car-logo-icon { font-size: 26px; }
+.car-version { background: var(--car-primary); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin-left: 8px; }
+.car-status-pill { font-size: 13px; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+.car-status--active { background: #e8f5e9; color: var(--car-success); }
+.car-status--paused { background: #fff3e0; color: var(--car-warning); }
+
+/* Nav */
+.car-admin-nav { background: #fff; padding: 0 20px; border-radius: 0 0 var(--car-radius) var(--car-radius); margin-bottom: 20px; display: flex; gap: 4px; box-shadow: var(--car-shadow); }
+.car-nav-link { padding: 14px 18px; text-decoration: none; color: var(--car-text-muted); font-size: 14px; font-weight: 500; border-bottom: 3px solid transparent; transition: all .2s; }
+.car-nav-link:hover { color: var(--car-primary); }
+.car-nav-link--active { color: var(--car-primary); border-bottom-color: var(--car-primary); }
+
+/* KPI Grid */
+.car-kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.car-kpi-card { background: var(--car-card-bg); border-radius: var(--car-radius); padding: 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--car-shadow); border-left: 4px solid transparent; min-width: 0; }
+.car-kpi--blue   { border-left-color: #3498db; }
+.car-kpi--green  { border-left-color: #27ae60; }
+.car-kpi--orange { border-left-color: #f39c12; }
+.car-kpi--purple { border-left-color: #9b59b6; }
+.car-kpi--teal   { border-left-color: #1abc9c; }
+.car-kpi--red    { border-left-color: #e74c3c; }
+.car-kpi-icon .dashicons { font-size: 32px; width: 32px; height: 32px; opacity: .7; }
+.car-kpi-content { flex: 1; min-width: 0; }
+.car-kpi-value { font-size: 24px; font-weight: 700; color: var(--car-text); line-height: 1.2; overflow-wrap: break-word; word-break: break-word; }
+.car-kpi-label { font-size: 12px; color: var(--car-text-muted); margin-top: 4px; }
+
+/* Cards */
+.car-card { background: var(--car-card-bg); border-radius: var(--car-radius); box-shadow: var(--car-shadow); margin-bottom: 20px; overflow: hidden; }
+.car-card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--car-border); }
+.car-card-header h3 { margin: 0; font-size: 16px; color: var(--car-text); }
+.car-card-full { width: 100%; }
+
+/* Tables */
+.car-table { width: 100%; border-collapse: collapse; }
+.car-table th { padding: 12px 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--car-text-muted); background: #f8f9fb; border-bottom: 2px solid var(--car-border); }
+.car-table td { padding: 12px 16px; border-bottom: 1px solid var(--car-border); font-size: 14px; color: var(--car-text); vertical-align: middle; }
+.car-table tr:last-child td { border-bottom: none; }
+.car-table tr:hover td { background: #fafbff; }
+
+/* Badges */
+.car-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.car-badge--abandoned { background: #fff3e0; color: #e65100; }
+.car-badge--recovered { background: #e8f5e9; color: #2e7d32; }
+.car-badge--pending   { background: #e3f2fd; color: #1565c0; }
+.car-badge--green     { background: #e8f5e9; color: #2e7d32; }
+.car-badge--gray      { background: #f5f5f5; color: #666; }
+.car-channel-badge    { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.car-channel--email     { background: #e3f2fd; color: #1565c0; }
+.car-channel--whatsapp  { background: #e8f5e9; color: #1b5e20; }
+.car-channel--sms       { background: #fff3e0; color: #e65100; }
+.car-channel--telegram  { background: #e0f7fa; color: #006064; }
+
+/* Buttons */
+.car-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; text-decoration: none; transition: all .2s; background: #e2e8f0; color: var(--car-text); }
+.car-btn:hover { background: #cbd5e0; color: var(--car-text); }
+.car-btn-primary { background: var(--car-primary); color: #fff; }
+.car-btn-primary:hover { background: var(--car-primary-dark); color: #fff; }
+.car-btn-danger { background: #fee2e2; color: var(--car-danger); }
+.car-btn-danger:hover { background: var(--car-danger); color: #fff; }
+.car-btn-secondary { background: #f1f5f9; color: #475569; }
+.car-btn-outline { background: #fff; color: var(--car-primary); border: 1.5px solid var(--car-primary); }
+.car-btn-outline:hover { background: var(--car-primary); color: #fff; }
+.car-btn-sm { padding: 5px 10px; font-size: 12px; }
+.car-btn-lg { padding: 12px 28px; font-size: 16px; }
+
+/* Forms */
+.car-input { width: 100%; max-width: 400px; padding: 8px 12px; border: 1.5px solid var(--car-border); border-radius: 6px; font-size: 14px; color: var(--car-text); transition: border-color .2s; }
+.car-input:focus { outline: none; border-color: var(--car-primary); box-shadow: 0 0 0 3px rgba(108,99,255,.1); }
+.car-input-sm { max-width: 120px; }
+.car-select { padding: 8px 12px; border: 1.5px solid var(--car-border); border-radius: 6px; font-size: 14px; color: var(--car-text); background: #fff; cursor: pointer; }
+.car-select-sm { padding: 5px 8px; font-size: 12px; border: 1.5px solid var(--car-border); border-radius: 6px; background: #fff; cursor: pointer; }
+.car-textarea { width: 100%; max-width: 600px; padding: 10px 12px; border: 1.5px solid var(--car-border); border-radius: 6px; font-size: 14px; font-family: inherit; }
+.car-form-row { margin-bottom: 20px; }
+.car-form-row label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; color: var(--car-text); }
+/* NOTE: min-width intentionally targets only the first (text) label via :first-child,
+   never a bare "label" selector — .car-toggle is also a <label>, and a generic
+   ".car-form-row--inline label" rule would force every toggle to that same min-width,
+   which is what was stretching the on/off switches to ~140px wherever this class was used. */
+.car-form-row--inline { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.car-form-row--inline > label:first-child { min-width: 200px; font-weight: 600; font-size: 13px; color: var(--car-text); margin-bottom: 0; }
+.car-field-hint { margin-top: 4px; font-size: 12px; color: var(--car-text-muted); }
+.car-checkbox-label { display: flex !important; align-items: center; gap: 8px; cursor: pointer; }
+
+/* Toggle */
+.car-toggle { position: relative; display: inline-block; width: 46px; min-width: 46px; height: 26px; flex-shrink: 0; }
+.car-toggle input { opacity: 0; width: 0; height: 0; }
+.car-toggle-slider { position: absolute; inset: 0; background: #cbd5e0; border-radius: 13px; cursor: pointer; transition: .3s; }
+.car-toggle-slider:before { content: ''; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.car-toggle input:checked + .car-toggle-slider { background: var(--car-primary); }
+.car-toggle input:checked + .car-toggle-slider:before { transform: translateX(20px); }
+
+/* Notices */
+.car-notice { padding: 12px 16px; border-radius: 6px; margin: 10px 0; }
+.car-notice--success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+.car-notice--error   { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.car-notice--info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+.car-notice--warning { background: #fffbeb; border: 1px solid #fed7aa; color: #92400e; }
+.car-notice p { margin: 0; font-size: 13px; }
+
+/* Progress Bar */
+.car-progress-bar { display: inline-block; width: 80px; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 6px; }
+.car-progress-fill { height: 100%; background: var(--car-primary); border-radius: 4px; }
+.car-progress-fill--green { background: var(--car-success); }
+.car-progress-fill--blue  { background: var(--car-info); }
+
+/* Chart Row */
+.car-chart-row { display: grid; grid-template-columns: 1fr 280px; gap: 20px; margin-bottom: 20px; }
+.car-chart-row--split { grid-template-columns: 1fr 1fr; }
+.car-chart-card { padding: 20px; }
+/* Chart.js needs a parent with a bounded, non-flowing height. Without this wrapper the
+   canvas had only an HTML height="" attribute (no CSS constraint), and with responsive:true
+   Chart.js falls back to its default 2:1 aspect ratio against the *rendered width* — on a
+   wide admin screen that made the canvas grow far taller than intended. Giving the wrapper
+   a fixed height + maintainAspectRatio:false in the JS options locks it down. */
+.car-chart-canvas-wrap { position: relative; width: 100%; height: 300px; }
+.car-chart-canvas-wrap--sm { height: 240px; }
+.car-chart-canvas-wrap canvas { max-width: 100%; }
+.car-quick-actions { padding: 0; }
+.car-action-list { list-style: none; margin: 0; padding: 0; }
+.car-action-list li { border-bottom: 1px solid var(--car-border); }
+.car-action-list li:last-child { border-bottom: none; }
+.car-action-link { display: flex; align-items: center; gap: 10px; padding: 14px 20px; color: var(--car-text); text-decoration: none; font-size: 14px; transition: background .2s; }
+.car-action-link:hover { background: #f8f9fb; color: var(--car-primary); }
+.car-action-link .dashicons { color: var(--car-primary); }
+
+/* Tabs (campaign modal) */
+.car-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--car-border); margin-bottom: 20px; }
+.car-tab-btn { padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 14px; color: var(--car-text-muted); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .2s; }
+.car-tab-btn:hover { color: var(--car-primary); }
+.car-tab-btn--active { color: var(--car-primary); border-bottom-color: var(--car-primary); }
+.car-tab-panel { display: none; }
+.car-tab-panel--active { display: block; }
+
+/* Settings tabs */
+.car-settings-page { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
+.car-settings-tabs { background: #fff; border-radius: var(--car-radius); box-shadow: var(--car-shadow); padding: 12px 0; height: fit-content; }
+.car-stab-btn { display: block; width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; font-size: 14px; cursor: pointer; color: var(--car-text-muted); transition: all .2s; font-weight: 500; }
+.car-stab-btn:hover { background: #f8f9fb; color: var(--car-primary); }
+.car-stab-btn--active { color: var(--car-primary); background: #f0edff; border-right: 3px solid var(--car-primary); }
+.car-stab-panel { display: none; }
+.car-stab-panel--active { display: block; }
+.car-settings-footer { background: #f8f9fb; padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+
+/* Modal */
+.car-modal { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; }
+.car-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
+.car-modal-content { position: relative; background: #fff; border-radius: var(--car-radius); width: 700px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+.car-modal-lg { width: 780px; }
+.car-modal-header { padding: 20px 24px; border-bottom: 1px solid var(--car-border); display: flex; justify-content: space-between; align-items: center; }
+.car-modal-header h3 { margin: 0; }
+.car-modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #999; line-height: 1; }
+.car-modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+.car-modal-footer { padding: 16px 24px; border-top: 1px solid var(--car-border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* Rules */
+.car-rule-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; padding: 10px; background: #f8f9fb; border-radius: 6px; border: 1px solid var(--car-border); }
+
+/* Misc */
+.car-empty, .car-empty-state { text-align: center; color: var(--car-text-muted); padding: 40px 20px; }
+.car-empty-icon { font-size: 48px; display: block; margin-bottom: 10px; color: #cbd5e0; }
+.car-page-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.car-page-toolbar h2 { margin: 0; }
+.car-search-form { display: flex; gap: 8px; align-items: center; }
+.car-pagination { padding: 16px 20px; display: flex; gap: 4px; }
+.car-page-link { padding: 6px 12px; border: 1px solid var(--car-border); border-radius: 4px; color: var(--car-text); text-decoration: none; font-size: 13px; }
+.car-page-link--active { background: var(--car-primary); color: #fff; border-color: var(--car-primary); }
+.car-inline-result { font-size: 13px; color: var(--car-success); }
+.car-text-sm { font-size: 12px; }
+.car-text-muted { color: var(--car-text-muted); }
+.car-filter-card .car-date-form { padding: 16px 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.car-reports-row { display: flex; flex-direction: column; gap: 20px; }
+code { background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+
+@media (max-width: 782px) {
+  .car-chart-row { grid-template-columns: 1fr; }
+  .car-settings-page { grid-template-columns: 1fr; }
+  .car-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Settings page improvements */
+.car-card-body { padding: 24px 20px; }
+.car-settings-save-bar { padding: 20px 0 0; display: flex; align-items: center; gap: 16px; }
+.car-stab-btn { display: flex; align-items: center; gap: 8px; }
+.car-stab-btn .dashicons { font-size: 16px; width: 16px; height: 16px; opacity: .6; }
+.car-stab-btn--active .dashicons { opacity: 1; }
+.car-provider-section { background: #f8f9fb; border-radius: 8px; padding: 16px; margin-top: 12px; border: 1px solid var(--car-border); }
+.car-input-with-btn { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.car-input-with-btn code.car-webhook-url { flex: 1; min-width: 200px; word-break: break-all; }
+.car-settings-content .car-card { margin-bottom: 0; }

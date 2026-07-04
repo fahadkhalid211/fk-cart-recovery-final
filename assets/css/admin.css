@@ -33,7 +33,7 @@
 .car-nav-link--active { color: var(--car-primary); border-bottom-color: var(--car-primary); }
 
 /* KPI Grid */
-.car-kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.car-kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin-bottom: 20px; }
 .car-kpi-card { background: var(--car-card-bg); border-radius: var(--car-radius); padding: 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--car-shadow); border-left: 4px solid transparent; min-width: 0; }
 .car-kpi--blue   { border-left-color: #3498db; }
 .car-kpi--green  { border-left-color: #27ae60; }

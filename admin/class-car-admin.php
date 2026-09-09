@@ -141,17 +141,15 @@ class CAR_Admin {
         // phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified via verify_nonce() above
         foreach ( $fields as $f ) {
             if ( isset( $_POST[ $f ] ) ) {
-                $raw_value = wp_unslash( $_POST[ $f ] );
-                
                 // Apply specific sanitization based on field type
                 if ( 'car_gdpr_text' === $f ) {
-                    $value = sanitize_textarea_field( $raw_value ); // Allows line breaks
+                    $value = sanitize_textarea_field( wp_unslash( $_POST[ $f ] ) );
                 } elseif ( in_array( $f, [ 'car_email_from_address', 'car_admin_notify_address' ], true ) ) {
-                    $value = sanitize_email( $raw_value );
+                    $value = sanitize_email( wp_unslash( $_POST[ $f ] ) );
                 } elseif ( 'car_cutoff_time' === $f ) {
-                    $value = absint( $raw_value );
+                    $value = absint( wp_unslash( $_POST[ $f ] ) );
                 } else {
-                    $value = sanitize_text_field( $raw_value );
+                    $value = sanitize_text_field( wp_unslash( $_POST[ $f ] ) );
                 }
                 
                 update_option( $f, $value );
@@ -200,9 +198,12 @@ class CAR_Admin {
     public function ajax_report_chart_data() {
         $this->verify_nonce();
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above
-        $from = $this->sanitize_report_date( wp_unslash( $_POST['from'] ?? '' ), gmdate( 'Y-m-d', strtotime( '-30 days' ) ) );
+        $raw_from = isset( $_POST['from'] ) ? sanitize_text_field( wp_unslash( $_POST['from'] ) ) : '';
+        $from     = $this->sanitize_report_date( $raw_from, gmdate( 'Y-m-d', strtotime( '-30 days' ) ) );
+
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above
-        $to   = $this->sanitize_report_date( wp_unslash( $_POST['to'] ?? '' ), gmdate( 'Y-m-d' ) );
+        $raw_to   = isset( $_POST['to'] ) ? sanitize_text_field( wp_unslash( $_POST['to'] ) ) : '';
+        $to       = $this->sanitize_report_date( $raw_to, gmdate( 'Y-m-d' ) );
 
         wp_send_json_success( [
             'trend'    => CAR_Analytics::chart_range( $from, $to ),
@@ -273,9 +274,12 @@ class CAR_Admin {
         check_admin_referer( 'car_export_report_csv' );
 
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified via check_admin_referer() above
-        $from = $this->sanitize_report_date( isset( $_GET['date_from'] ) ? wp_unslash( $_GET['date_from'] ) : '', gmdate( 'Y-m-d', strtotime( '-30 days' ) ) );
+        $raw_from = isset( $_GET['date_from'] ) ? sanitize_text_field( wp_unslash( $_GET['date_from'] ) ) : '';
+        $from     = $this->sanitize_report_date( $raw_from, gmdate( 'Y-m-d', strtotime( '-30 days' ) ) );
+
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified via check_admin_referer() above
-        $to   = $this->sanitize_report_date( isset( $_GET['date_to'] )   ? wp_unslash( $_GET['date_to'] )   : '', gmdate( 'Y-m-d' ) );
+        $raw_to   = isset( $_GET['date_to'] ) ? sanitize_text_field( wp_unslash( $_GET['date_to'] ) ) : '';
+        $to       = $this->sanitize_report_date( $raw_to, gmdate( 'Y-m-d' ) );
 
         $stats     = CAR_Analytics::summary( $from, $to );
         $rate      = CAR_Analytics::recovery_rate( $from, $to );
@@ -288,9 +292,10 @@ class CAR_Admin {
         header( 'Content-Disposition: attachment; filename=cart-recovery-report-' . $from . '-to-' . $to . '.csv' );
         header( 'X-Content-Type-Options: nosniff' );
 
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- php://output is an direct output stream, not a file.
         $out = fopen( 'php://output', 'w' );
         // UTF-8 BOM so Excel renders currency symbols / non-ASCII product names correctly.
-        fwrite( $out, "\xEF\xBB\xBF" );
+        echo "\xEF\xBB\xBF";
 
         fputcsv( $out, [ 'Cart Abandonment Recovery Pro — Report', $from . ' to ' . $to ] );
         fputcsv( $out, [] );
@@ -328,7 +333,6 @@ class CAR_Admin {
             fputcsv( $out, [ $this->csv_safe( $p['name'] ?: ( '#' . $p['id'] ) ), $p['abandoned'], $p['recovered'], $pr ] );
         }
 
-        fclose( $out );
         exit;
     }
 

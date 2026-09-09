@@ -83,7 +83,9 @@ class CAR_Telegram {
             ];
             $msg = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $plain );
         } else {
+            /* translators: %s: customer name */
             $msg  = '👋 <b>' . sprintf( __( 'Hi %s!', 'fk-cart-recovery' ), $name ) . "</b>\n";
+            /* translators: 1: formatted cart price, 2: site name */
             $msg .= sprintf( __( 'You left items worth %1$s in your cart at %2$s.', 'fk-cart-recovery' ), '<b>' . $price . '</b>', $site ) . "\n";
             
             if ( $items_text ) {
@@ -91,6 +93,7 @@ class CAR_Telegram {
             }
             
             if ( $coupon ) {
+                /* translators: %s: coupon code */
                 $msg .= "\n🎁 " . sprintf( __( 'Use code %s for a special discount!', 'fk-cart-recovery' ), '<code>' . esc_html( $coupon ) . '</code>' ) . "\n";
             }
             

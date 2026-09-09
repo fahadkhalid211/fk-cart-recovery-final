@@ -478,19 +478,12 @@ class CAR_DB {
         }
         $date_sql = $date_where ? ' AND ' . implode( ' AND ', $date_where ) : '';
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        return $wpdb->get_results(
-            "SELECT c.name, c.channel,
-            COUNT(l.id) as sent,
-            SUM(l.open_count > 0) as opened,
-            SUM(l.click_count > 0) as clicked,
-            SUM(l.unsubscribed) as unsubscribed
-            FROM {$wpdb->prefix}car_email_logs l
-            JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id
-            WHERE l.status = 'sent' {$date_sql}
-            GROUP BY l.campaign_id
-            ORDER BY sent DESC"
-        );
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $query = "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent'{$date_sql} GROUP BY l.campaign_id ORDER BY sent DESC";
+        $results = $wpdb->get_results( $query );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+
+        return $results;
     }
 
     /**

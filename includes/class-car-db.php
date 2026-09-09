@@ -288,32 +288,34 @@ class CAR_DB {
     public static function get_stats( $date_from = '', $date_to = '' ) {
         global $wpdb;
 
-        // Build each date-range clause individually via prepare() so the
-        // assembled $date_sql string contains only already-escaped SQL fragments.
-        $date_parts = [];
-        if ( $date_from ) {
-            $date_parts[] = $wpdb->prepare( 'abandoned_at >= %s', $date_from . ' 00:00:00' );
-        }
-        if ( $date_to ) {
-            $date_parts[] = $wpdb->prepare( 'abandoned_at <= %s', $date_to . ' 23:59:59' );
+        if ( $date_from && $date_to ) {
+            $from_dt = $date_from . ' 00:00:00';
+            $to_dt   = $date_to . ' 23:59:59';
+            $total_abandoned = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status IN ('abandoned','recovered') AND abandoned_at >= %s AND abandoned_at <= %s", $from_dt, $to_dt ) );
+            $total_recovered = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered' AND abandoned_at >= %s AND abandoned_at <= %s", $from_dt, $to_dt ) );
+            $abandoned_value = (float) $wpdb->get_var( $wpdb->prepare( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'abandoned' AND abandoned_at >= %s AND abandoned_at <= %s", $from_dt, $to_dt ) );
+            $recovered_value = (float) $wpdb->get_var( $wpdb->prepare( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered' AND abandoned_at >= %s AND abandoned_at <= %s", $from_dt, $to_dt ) );
+        } elseif ( $date_from ) {
+            $from_dt = $date_from . ' 00:00:00';
+            $total_abandoned = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status IN ('abandoned','recovered') AND abandoned_at >= %s", $from_dt ) );
+            $total_recovered = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered' AND abandoned_at >= %s", $from_dt ) );
+            $abandoned_value = (float) $wpdb->get_var( $wpdb->prepare( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'abandoned' AND abandoned_at >= %s", $from_dt ) );
+            $recovered_value = (float) $wpdb->get_var( $wpdb->prepare( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered' AND abandoned_at >= %s", $from_dt ) );
+        } elseif ( $date_to ) {
+            $to_dt = $date_to . ' 23:59:59';
+            $total_abandoned = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status IN ('abandoned','recovered') AND abandoned_at <= %s", $to_dt ) );
+            $total_recovered = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered' AND abandoned_at <= %s", $to_dt ) );
+            $abandoned_value = (float) $wpdb->get_var( $wpdb->prepare( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'abandoned' AND abandoned_at <= %s", $to_dt ) );
+            $recovered_value = (float) $wpdb->get_var( $wpdb->prepare( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered' AND abandoned_at <= %s", $to_dt ) );
+        } else {
+            $total_abandoned = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status IN ('abandoned','recovered')" );
+            $total_recovered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered'" );
+            $abandoned_value = (float) $wpdb->get_var( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'abandoned'" );
+            $recovered_value = (float) $wpdb->get_var( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered'" );
         }
 
-        $date_sql = $date_parts ? ' AND ' . implode( ' AND ', $date_parts ) : '';
-
-        // $wpdb->prefix is trusted; $date_sql is composed of prepare() output only.
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $total_abandoned = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status IN ('abandoned','recovered'){$date_sql}" );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $total_recovered = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered'{$date_sql}" );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $abandoned_value = (float) $wpdb->get_var( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'abandoned'{$date_sql}" );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $recovered_value = (float) $wpdb->get_var( "SELECT COALESCE(SUM(cart_total),0) FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'recovered'{$date_sql}" );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $emails_sent    = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_email_logs WHERE status = 'sent'" );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $emails_opened  = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_email_logs WHERE open_count > 0" );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $emails_clicked = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}car_email_logs WHERE click_count > 0" );
 
         return compact( 'total_abandoned', 'total_recovered', 'abandoned_value', 'recovered_value', 'emails_sent', 'emails_opened', 'emails_clicked' );
@@ -469,21 +471,33 @@ class CAR_DB {
     public static function get_campaign_performance( $from = '', $to = '' ) {
         global $wpdb;
 
-        $date_where = [];
-        if ( $from ) {
-            $date_where[] = $wpdb->prepare( 'DATE(l.sent_at) >= %s', $from );
-        }
-        if ( $to ) {
-            $date_where[] = $wpdb->prepare( 'DATE(l.sent_at) <= %s', $to );
-        }
-        $date_sql = $date_where ? ' AND ' . implode( ' AND ', $date_where ) : '';
+        $fields = "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent'";
 
-        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $query = "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent'{$date_sql} GROUP BY l.campaign_id ORDER BY sent DESC";
-        $results = $wpdb->get_results( $query );
-        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        if ( $from && $to ) {
+            return $wpdb->get_results(
+                $wpdb->prepare(
+                    $fields . " AND DATE(l.sent_at) >= %s AND DATE(l.sent_at) <= %s GROUP BY l.campaign_id ORDER BY sent DESC",
+                    $from,
+                    $to
+                )
+            );
+        } elseif ( $from ) {
+            return $wpdb->get_results(
+                $wpdb->prepare(
+                    $fields . " AND DATE(l.sent_at) >= %s GROUP BY l.campaign_id ORDER BY sent DESC",
+                    $from
+                )
+            );
+        } elseif ( $to ) {
+            return $wpdb->get_results(
+                $wpdb->prepare(
+                    $fields . " AND DATE(l.sent_at) <= %s GROUP BY l.campaign_id ORDER BY sent DESC",
+                    $to
+                )
+            );
+        }
 
-        return $results;
+        return $wpdb->get_results( $fields . " GROUP BY l.campaign_id ORDER BY sent DESC" );
     }
 
     /**
@@ -493,21 +507,39 @@ class CAR_DB {
     public static function get_channel_stats( $from = '', $to = '' ) {
         global $wpdb;
 
-        $date_parts = [];
-        if ( $from ) {
-            $date_parts[] = $wpdb->prepare( 'DATE(sent_at) >= %s', $from );
+        if ( $from && $to ) {
+            $rows = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT channel, COUNT(*) as sent FROM {$wpdb->prefix}car_email_logs WHERE status = 'sent' AND DATE(sent_at) >= %s AND DATE(sent_at) <= %s GROUP BY channel",
+                    $from,
+                    $to
+                )
+            );
+        } elseif ( $from ) {
+            $rows = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT channel, COUNT(*) as sent FROM {$wpdb->prefix}car_email_logs WHERE status = 'sent' AND DATE(sent_at) >= %s GROUP BY channel",
+                    $from
+                )
+            );
+        } elseif ( $to ) {
+            $rows = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT channel, COUNT(*) as sent FROM {$wpdb->prefix}car_email_logs WHERE status = 'sent' AND DATE(sent_at) <= %s GROUP BY channel",
+                    $to
+                )
+            );
+        } else {
+            $rows = $wpdb->get_results(
+                "SELECT channel, COUNT(*) as sent FROM {$wpdb->prefix}car_email_logs WHERE status = 'sent' GROUP BY channel"
+            );
         }
-        if ( $to ) {
-            $date_parts[] = $wpdb->prepare( 'DATE(sent_at) <= %s', $to );
-        }
-        $date_sql = $date_parts ? ' AND ' . implode( ' AND ', $date_parts ) : '';
-
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $rows = $wpdb->get_results( "SELECT channel, COUNT(*) as sent FROM {$wpdb->prefix}car_email_logs WHERE status = 'sent'{$date_sql} GROUP BY channel" );
 
         $out = [];
-        foreach ( $rows as $row ) {
-            $out[] = [ 'channel' => $row->channel, 'sent' => (int) $row->sent ];
+        if ( is_array( $rows ) ) {
+            foreach ( $rows as $row ) {
+                $out[] = [ 'channel' => $row->channel, 'sent' => (int) $row->sent ];
+            }
         }
         return $out;
     }

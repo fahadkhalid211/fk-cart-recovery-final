@@ -471,12 +471,10 @@ class CAR_DB {
     public static function get_campaign_performance( $from = '', $to = '' ) {
         global $wpdb;
 
-        $fields = "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent'";
-
         if ( $from && $to ) {
             return $wpdb->get_results(
                 $wpdb->prepare(
-                    $fields . " AND DATE(l.sent_at) >= %s AND DATE(l.sent_at) <= %s GROUP BY l.campaign_id ORDER BY sent DESC",
+                    "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent' AND DATE(l.sent_at) >= %s AND DATE(l.sent_at) <= %s GROUP BY l.campaign_id ORDER BY sent DESC",
                     $from,
                     $to
                 )
@@ -484,20 +482,22 @@ class CAR_DB {
         } elseif ( $from ) {
             return $wpdb->get_results(
                 $wpdb->prepare(
-                    $fields . " AND DATE(l.sent_at) >= %s GROUP BY l.campaign_id ORDER BY sent DESC",
+                    "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent' AND DATE(l.sent_at) >= %s GROUP BY l.campaign_id ORDER BY sent DESC",
                     $from
                 )
             );
         } elseif ( $to ) {
             return $wpdb->get_results(
                 $wpdb->prepare(
-                    $fields . " AND DATE(l.sent_at) <= %s GROUP BY l.campaign_id ORDER BY sent DESC",
+                    "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent' AND DATE(l.sent_at) <= %s GROUP BY l.campaign_id ORDER BY sent DESC",
                     $to
                 )
             );
         }
 
-        return $wpdb->get_results( $fields . " GROUP BY l.campaign_id ORDER BY sent DESC" );
+        return $wpdb->get_results(
+            "SELECT c.name, c.channel, COUNT(l.id) as sent, SUM(l.open_count > 0) as opened, SUM(l.click_count > 0) as clicked, SUM(l.unsubscribed) as unsubscribed FROM {$wpdb->prefix}car_email_logs l JOIN {$wpdb->prefix}car_campaigns c ON l.campaign_id = c.id WHERE l.status = 'sent' GROUP BY l.campaign_id ORDER BY sent DESC"
+        );
     }
 
     /**

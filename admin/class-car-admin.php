@@ -16,9 +16,9 @@ class CAR_Admin {
         add_action( 'wp_ajax_car_get_chart_data',           [ $this, 'ajax_chart_data' ] );
         add_action( 'wp_ajax_car_get_campaign',             [ $this, 'ajax_get_campaign' ] );
         add_action( 'wp_ajax_car_save_rules',               [ $this, 'ajax_save_rules' ] );
-        add_action( 'wp_ajax_car_get_recovery_link',        [ $this, 'ajax_get_recovery_link' ] ); // NEW: On-demand link generation
-        add_action( 'wp_ajax_car_get_report_chart_data',    [ $this, 'ajax_report_chart_data' ] ); // NEW: Reports trend + channel charts
-        add_action( 'admin_post_car_export_report_csv',     [ $this, 'export_report_csv' ] );      // NEW: Reports CSV export
+        add_action( 'wp_ajax_car_get_recovery_link',        [ $this, 'ajax_get_recovery_link' ] );
+        add_action( 'wp_ajax_car_get_report_chart_data',    [ $this, 'ajax_report_chart_data' ] );
+        add_action( 'admin_post_car_export_report_csv',     [ $this, 'export_report_csv' ] );
         
         add_filter( 'plugin_action_links_' . CAR_PRO_BASENAME, [ $this, 'plugin_action_links' ] );
     }
@@ -72,7 +72,7 @@ class CAR_Admin {
     public function render_reports()   { include CAR_PRO_PATH . 'admin/views/reports.php'; }
     public function render_settings()  { include CAR_PRO_PATH . 'admin/views/settings.php'; }
 
-    // ── AJAX: verify nonce helper ────────────────────────────────────────────
+    // Verify AJAX nonce helper
     private function verify_nonce() {
         check_ajax_referer( 'car_admin_nonce', 'nonce' );
         if ( ! current_user_can( 'manage_options' ) ) {
@@ -80,7 +80,7 @@ class CAR_Admin {
         }
     }
 
-    // ── AJAX handlers ────────────────────────────────────────────────────────
+    // AJAX handlers
     public function ajax_delete_cart() {
         $this->verify_nonce();
         $id = absint( isset( $_POST['id'] ) ? wp_unslash( $_POST['id'] ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above
@@ -194,8 +194,8 @@ class CAR_Admin {
     }
 
     /**
-     * NEW: Feeds the Reports page trend chart + channel breakdown doughnut,
-     * scoped to whatever date range the user has applied on that page.
+     * Feeds the Reports page trend chart and channel breakdown doughnut,
+     * scoped to the selected date range.
      */
     public function ajax_report_chart_data() {
         $this->verify_nonce();
@@ -252,7 +252,7 @@ class CAR_Admin {
     }
 
     /**
-     * NEW: Generate recovery link on-demand to prevent database transient pollution.
+     * Generate recovery link on demand.
      */
     public function ajax_get_recovery_link() {
         $this->verify_nonce();
@@ -263,7 +263,7 @@ class CAR_Admin {
     }
 
     /**
-     * NEW: Streams the current Reports view (summary + campaign performance +
+     * Streams the current Reports view (summary, campaign performance, and
      * product breakdown) as a CSV download.
      */
     public function export_report_csv() {
@@ -345,7 +345,7 @@ class CAR_Admin {
         return $value;
     }
 
-    // ── Plugin action links (plugins.php) ────────────────────────────────────
+    // Plugin action links (plugins.php)
     public function plugin_action_links( $links ) {
         $custom = [
             '<a href="' . esc_url( admin_url( 'admin.php?page=car-pro-settings' ) ) . '">' . esc_html__( 'Settings', 'fk-cart-recovery' ) . '</a>',

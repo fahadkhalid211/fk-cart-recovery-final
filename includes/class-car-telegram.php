@@ -6,8 +6,7 @@ class CAR_Telegram {
     public static function send( $cart, $campaign ) {
         if ( get_option( 'car_telegram_enabled', 'no' ) !== 'yes' ) return false;
 
-        // Resolve the customer's Telegram chat ID.
-        // Logged-in user → user meta.  Guest → option set when they messaged the bot.
+        // Resolve customer Telegram chat ID
         $chat_id = '';
         if ( ! empty( $cart->user_id ) ) {
             $chat_id = (string) get_user_meta( (int) $cart->user_id, 'car_telegram_chat_id', true );
@@ -151,7 +150,7 @@ class CAR_Telegram {
         }
 
         $webhook = home_url( '/?car_telegram_webhook=1' );
-        // Generate a secure secret token based on the bot token to verify webhook requests
+        // Secret token for webhook verification
         $secret  = wp_hash( $token ); 
         
         $url = 'https://api.telegram.org/bot' . $token . '/setWebhook?url=' . rawurlencode( $webhook ) . '&secret_token=' . rawurlencode( $secret );
@@ -172,7 +171,7 @@ class CAR_Telegram {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ( empty( $_GET['car_telegram_webhook'] ) ) return;
 
-        // SECURITY: Verify the request is actually from Telegram using the secret token (constant-time compare)
+        // Verify Telegram secret token
         $token  = get_option( 'car_telegram_bot_token', '' );
         $secret = isset( $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ) ) : '';
 
@@ -194,9 +193,7 @@ class CAR_Telegram {
         if ( ! $chat_id ) exit;
 
         if ( is_email( $text ) ) {
-            // SECURITY: Never link on a bare typed email — anyone can type anyone
-            // else's address. Send a confirmation link to that address instead and
-            // only link the chat_id once the real owner clicks it.
+            // Send email confirmation link before linking Telegram chat ID
             self::send_confirmation_email( sanitize_email( $text ), $chat_id );
             self::send_message( $chat_id, __( "We've sent a confirmation link to that email address. Click it to finish linking your Telegram account.", 'fk-cart-recovery' ) );
         } else {
@@ -207,10 +204,7 @@ class CAR_Telegram {
     }
 
     /**
-     * SECURITY: Email-ownership confirmation step for Telegram account linking.
-     * Generates a one-time code, stores it against the (email, chat_id) pair,
-     * and emails a confirmation link. The chat_id is only linked once that
-     * link is clicked from the real inbox.
+     * Send email confirmation for Telegram account linking.
      */
     private static function send_confirmation_email( $email, $chat_id ) {
         if ( ! is_email( $email ) ) return;
@@ -231,8 +225,7 @@ class CAR_Telegram {
     }
 
     /**
-     * SECURITY: Completes Telegram linking only after the person clicks the
-     * confirmation link sent to their own inbox — proof they own the address.
+     * Complete Telegram account linking after email verification.
      */
     public static function confirm_link() {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended

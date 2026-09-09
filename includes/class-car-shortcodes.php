@@ -30,14 +30,12 @@ class CAR_Shortcodes {
 
     public function recovery_button( $atts ) {
         $atts = shortcode_atts( [ 'text' => __( 'Recover My Cart', 'fk-cart-recovery' ), 'class' => 'button' ], $atts );
-        // Nonce not applicable – this is a read-only shortcode that renders a link; no data is written.
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ( empty( $_GET['car_recover'] ) ) {
-            // phpcs:enable WordPress.Security.NonceVerification.Recommended
             return '';
         }
-        $recover = sanitize_text_field( wp_unslash( $_GET['car_recover'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        // phpcs:enable WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $recover = sanitize_text_field( wp_unslash( $_GET['car_recover'] ) );
         return '<a href="' . esc_url( add_query_arg( 'car_recover', $recover ) ) . '" class="' . esc_attr( $atts['class'] ) . '">' . esc_html( $atts['text'] ) . '</a>';
     }
 }

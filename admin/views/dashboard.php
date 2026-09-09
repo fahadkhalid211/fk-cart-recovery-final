@@ -105,7 +105,6 @@ $currency      = get_woocommerce_currency_symbol();
                             <td><?php echo esc_html( trim( $cart->first_name . ' ' . $cart->last_name ) ?: '—' ); ?></td>
                             <td><?php echo esc_html( $cart->email ); ?></td>
                             <td><?php echo wp_kses_post( wc_price( $cart->cart_total ) ); ?></td>
-                            <!-- FIXED: Replaced deprecated current_time('timestamp') with time(), and made 'ago' translatable -->
                             <td><?php echo esc_html( sprintf( /* translators: %s: human time diff */ __( '%s ago', 'fk-cart-recovery' ), human_time_diff( strtotime( $cart->abandoned_at ), time() ) ) ); ?></td>
                             <td><span class="car-badge car-badge--<?php echo esc_attr( $cart->status ); ?>"><?php echo esc_html( ucfirst( $cart->status ) ); ?></span></td>
                         </tr>
@@ -139,7 +138,6 @@ jQuery(function($){
                 data:{
                     labels:labels,
                     datasets:[
-                        // FIXED: Removed the duplicate "Abandoned" string that was causing "AbandonedAbandoned"
                         {
                             label:'<?php echo esc_js( __( 'Abandoned', 'fk-cart-recovery' ) ); ?>',
                             data:abandoned,

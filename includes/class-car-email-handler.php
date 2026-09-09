@@ -57,7 +57,7 @@ class CAR_Email_Handler {
             'coupon_code'    => $coupon_code,
         ] );
 
-        // Only add the tracking token to the URL (removed unused car_log param)
+        // Add tracking token to recovery URL
         $recovery_url = add_query_arg( 'car_tk', $token, $recovery_url );
 
         $placeholders = self::get_placeholders( $cart, $coupon_code, $campaign, $recovery_url, $unsub_url, $track_url );

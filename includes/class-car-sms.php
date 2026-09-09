@@ -44,7 +44,7 @@ class CAR_SMS {
     }
 
     private static function build_message( $cart, $campaign, $coupon, $recovery_url ) {
-        // Always use plain-text price – never wc_price() raw output.
+        // Format plain-text price
         $price = CAR_Email_Handler::format_price_plain( $cart->cart_total );
         $name  = trim( $cart->first_name ) ?: '';
         $site  = get_bloginfo( 'name' );

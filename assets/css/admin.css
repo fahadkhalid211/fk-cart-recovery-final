@@ -129,11 +129,7 @@
 .car-chart-row { display: grid; grid-template-columns: 1fr 280px; gap: 20px; margin-bottom: 20px; }
 .car-chart-row--split { grid-template-columns: 1fr 1fr; }
 .car-chart-card { padding: 20px; }
-/* Chart.js needs a parent with a bounded, non-flowing height. Without this wrapper the
-   canvas had only an HTML height="" attribute (no CSS constraint), and with responsive:true
-   Chart.js falls back to its default 2:1 aspect ratio against the *rendered width* — on a
-   wide admin screen that made the canvas grow far taller than intended. Giving the wrapper
-   a fixed height + maintainAspectRatio:false in the JS options locks it down. */
+/* Chart Canvas Container */
 .car-chart-canvas-wrap { position: relative; width: 100%; height: 300px; }
 .car-chart-canvas-wrap--sm { height: 240px; }
 .car-chart-canvas-wrap canvas { max-width: 100%; }

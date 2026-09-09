@@ -5,7 +5,7 @@
     var nonce = carAdmin.nonce;
     var ajaxUrl = carAdmin.ajaxUrl;
 
-    // ── Tabs ──────────────────────────────────────────────────────────────────
+    // Navigation Tabs
     $(document).on('click', '.car-tab-btn', function() {
         var tab = $(this).data('tab');
         $(this).closest('.car-modal-body').find('.car-tab-btn').removeClass('car-tab-btn--active');
@@ -23,7 +23,7 @@
         $('[data-spanel="' + stab + '"]').addClass('car-stab-panel--active');
     });
 
-    // ── Campaign Modal ────────────────────────────────────────────────────────
+    // Campaign Modal
     function openCampaignModal(data, rules) {
         data = data || {};
         rules = rules || [];
@@ -176,7 +176,7 @@
         });
     });
 
-    // ── Settings ─────────────────────────────────────────────────────────────
+    // Settings
     $(document).on('click', '#car-save-settings', function() {
         var $btn = $(this).text(carAdmin.i18n.saving).prop('disabled', true);
         var data = { action: 'car_save_settings', nonce: nonce };

@@ -20,15 +20,14 @@ class CAR_Scheduler {
         add_action( 'car_pro_process_scheduler', [ $this, 'process' ], 10 );
     }
 
-    // ── Step 1: promote pending → abandoned ─────────────────────────────────
+    // Mark pending carts as abandoned
     public function mark_abandoned_carts() {
         global $wpdb;
 
         $cutoff = absint( get_option( 'car_cutoff_time', 60 ) );
         $time   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$cutoff} minutes" ) );
 
-        // LIMIT 100 prevents PHP timeouts on stores with massive backlogs. 
-        // The cron runs every 5 mins, so it will safely catch up.
+        // Process batch of pending carts
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $rows = $wpdb->get_results( $wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'pending' AND created_at <= %s LIMIT 100",
@@ -45,7 +44,7 @@ class CAR_Scheduler {
         }
     }
 
-    // ── Step 2: send campaigns ───────────────────────────────────────────────
+    // Dispatch campaigns
     public function process() {
         if ( get_option( 'car_enabled', 'yes' ) !== 'yes' ) {
             return;
@@ -62,7 +61,6 @@ class CAR_Scheduler {
             return;
         }
 
-        // Use time() instead of deprecated current_time('timestamp')
         $now = time(); 
 
         foreach ( $carts as $cart ) {
@@ -96,7 +94,7 @@ class CAR_Scheduler {
         }
     }
 
-    // ── Dispatch by channel ──────────────────────────────────────────────────
+    // Dispatch by channel
     private function dispatch( $campaign, $cart ) {
         $channel = $campaign->channel ?? 'email';
 

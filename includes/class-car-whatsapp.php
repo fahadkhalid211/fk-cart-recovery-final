@@ -58,7 +58,7 @@ class CAR_WhatsApp {
      * replaced with raw HTML.
      */
     private static function build_message( $cart, $campaign, $coupon_code, $recovery_url ) {
-        // Plain-text price – never use wc_price() directly; it returns HTML.
+        // Format plain-text price
         $price_plain   = CAR_Email_Handler::format_price_plain( $cart->cart_total );
         $customer_name = trim( $cart->first_name . ' ' . $cart->last_name ) ?: __( 'there', 'fk-cart-recovery' );
         $site_name     = get_bloginfo( 'name' );
@@ -76,7 +76,7 @@ class CAR_WhatsApp {
         }
 
         if ( ! empty( $campaign->body ) ) {
-            // Convert HTML campaign body → plain text, then fill placeholders.
+            // Convert HTML campaign body to plain text
             $body = CAR_Email_Handler::html_to_plain( $campaign->body );
         } else {
             $body = self::default_template( ! empty( $coupon_code ) );
@@ -85,7 +85,7 @@ class CAR_WhatsApp {
         $placeholders = [
             '{customer_name}'    => $customer_name,
             '{cart_items}'       => rtrim( $items_text ),
-            '{cart_items_table}' => rtrim( $items_text ),   // email placeholder → plain list
+            '{cart_items_table}' => rtrim( $items_text ),   // email placeholder to plain list
             '{cart_total}'       => $price_plain,
             '{recovery_link}'    => $recovery_url,
             '{coupon_code}'      => $coupon_code ?: '',
@@ -98,7 +98,7 @@ class CAR_WhatsApp {
 
         $message = str_replace( array_keys( $placeholders ), array_values( $placeholders ), $body );
 
-        // Safety net: strip any residual HTML that slipped through.
+        // Strip any remaining HTML tags
         $message = CAR_Email_Handler::html_to_plain( $message );
 
         // Ensure the recovery URL is present.
@@ -119,7 +119,7 @@ class CAR_WhatsApp {
         return $tpl;
     }
 
-    // ── Providers ─────────────────────────────────────────────────────────────
+    // Providers
 
     private static function send_ultramsg( $phone, $message ) {
         $instance = get_option( 'car_ultramsg_instance', '' );

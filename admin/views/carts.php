@@ -55,7 +55,6 @@ $pages   = (int) ceil( $total / $per );
                         <td><span class="car-badge car-badge--<?php echo esc_attr( $cart->status ); ?>"><?php echo esc_html( ucfirst( $cart->status ) ); ?></span></td>
                         <td><?php echo $cart->abandoned_at ? esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $cart->abandoned_at ) ) ) : '—'; ?></td>
                         <td>
-                            <!-- FIXED: Replaced PHP link generation with an AJAX button to prevent transient database pollution -->
                             <button class="car-btn car-btn-sm car-get-recovery-link" data-id="<?php echo esc_attr( $cart->id ); ?>" title="<?php esc_attr_e( 'Copy Recovery Link', 'fk-cart-recovery' ); ?>">🔗</button>
                             <button class="car-btn car-btn-sm car-btn-danger car-delete-cart" data-id="<?php echo esc_attr( $cart->id ); ?>">🗑</button>
                         </td>
@@ -75,7 +74,6 @@ $pages   = (int) ceil( $total / $per );
     </div>
 </div>
 
-<!-- FIXED: Inline script to handle on-demand recovery link generation -->
 <script>
 jQuery(function($) {
     $('.car-get-recovery-link').on('click', function(e) {

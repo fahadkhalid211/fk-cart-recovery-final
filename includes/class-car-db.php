@@ -2,16 +2,14 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * All direct $wpdb calls in this file are intentional – there is no WP API
- * for plugin-specific tables.  $wpdb->prefix is set by WordPress core and is
- * never user-supplied, so table-name interpolation is safe.
+ * Database operations handler for cart recovery.
  *
  * phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
  * phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
  */
 class CAR_DB {
 
-    // ── Abandoned Carts ──────────────────────────────────────────────────────
+    // Abandoned Carts
     public static function get_cart( $id ) {
         global $wpdb;
         return $wpdb->get_row( $wpdb->prepare(
@@ -148,7 +146,7 @@ class CAR_DB {
         $wpdb->delete( $wpdb->prefix . 'car_email_logs',      [ 'cart_id' => absint( $id ) ] );
     }
 
-    // ── Campaigns ────────────────────────────────────────────────────────────
+    // Campaigns
     public static function get_campaigns( $args = [] ) {
         global $wpdb;
 
@@ -195,7 +193,7 @@ class CAR_DB {
         $wpdb->update( $wpdb->prefix . 'car_campaigns', [ 'status' => 'deleted' ], [ 'id' => absint( $id ) ] );
     }
 
-    // ── Email / Message Logs ─────────────────────────────────────────────────
+    // Email / Message Logs
     public static function log_already_sent( $cart_id, $campaign_id ) {
         global $wpdb;
         return (bool) $wpdb->get_var( $wpdb->prepare(
@@ -250,7 +248,7 @@ class CAR_DB {
         ) );
     }
 
-    // ── Rules ────────────────────────────────────────────────────────────────
+    // Campaign Rules
     public static function get_rules( $campaign_id ) {
         global $wpdb;
         return $wpdb->get_results( $wpdb->prepare(
@@ -270,7 +268,7 @@ class CAR_DB {
         }
     }
 
-    // ── Coupons ──────────────────────────────────────────────────────────────
+    // Coupons
     public static function get_coupon( $cart_id, $campaign_id ) {
         global $wpdb;
         return $wpdb->get_row( $wpdb->prepare(
@@ -286,7 +284,7 @@ class CAR_DB {
         return $wpdb->insert_id;
     }
 
-    // ── Analytics ────────────────────────────────────────────────────────────
+    // Analytics
     public static function get_stats( $date_from = '', $date_to = '' ) {
         global $wpdb;
 

@@ -39,7 +39,7 @@
         <!-- Content Area -->
         <div class="car-settings-content">
 
-            <!-- ── General ─────────────────────────────────────────────── -->
+            <!-- General -->
             <div class="car-stab-panel car-stab-panel--active" data-spanel="general">
                 <div class="car-card">
                     <div class="car-card-header">
@@ -84,7 +84,7 @@
                 </div>
             </div>
 
-            <!-- ── Email ──────────────────────────────────────────────── -->
+            <!-- Email -->
             <div class="car-stab-panel" data-spanel="email">
                 <div class="car-card">
                     <div class="car-card-header">
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- ── WhatsApp ───────────────────────────────────────────── -->
+            <!-- WhatsApp -->
             <div class="car-stab-panel" data-spanel="whatsapp">
                 <div class="car-card">
                     <div class="car-card-header">
@@ -179,7 +179,7 @@
                 </div>
             </div>
 
-            <!-- ── SMS ───────────────────────────────────────────────── -->
+            <!-- SMS -->
             <div class="car-stab-panel" data-spanel="sms">
                 <div class="car-card">
                     <div class="car-card-header">
@@ -238,7 +238,7 @@
                 </div>
             </div>
 
-            <!-- ── Telegram ───────────────────────────────────────────── -->
+            <!-- Telegram -->
             <div class="car-stab-panel" data-spanel="telegram">
                 <div class="car-card">
                     <div class="car-card-header">
@@ -281,7 +281,7 @@
                 </div>
             </div>
 
-            <!-- ── GDPR ───────────────────────────────────────────────── -->
+            <!-- GDPR -->
             <div class="car-stab-panel" data-spanel="gdpr">
                 <div class="car-card">
                     <div class="car-card-header">
@@ -308,7 +308,7 @@
                 </div>
             </div>
 
-            <!-- ── Notifications ─────────────────────────────────────── -->
+            <!-- Notifications -->
             <div class="car-stab-panel" data-spanel="notifications">
                 <div class="car-card">
                     <div class="car-card-header">

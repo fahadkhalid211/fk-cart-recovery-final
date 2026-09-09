@@ -23,7 +23,6 @@ class CAR_Notifications {
         $subject = sprintf( __( '[%1$s] New Cart Abandoned - %2$s', 'fk-cart-recovery' ), get_bloginfo( 'name' ), $total );
 
         /* translators: 1: customer full name, 2: customer email, 3: cart total, 4: abandonment timestamp, 5: admin dashboard URL */
-        /* translators: 1: customer full name, 2: customer email, 3: cart total, 4: abandonment timestamp, 5: admin dashboard URL */
         $body = sprintf(
             __( "A cart has been abandoned.\n\nCustomer: %1\$s\nEmail: %2\$s\nTotal: %3\$s\nTime: %4\$s\n\nView in dashboard: %5\$s", 'fk-cart-recovery' ),
             $cart->first_name . ' ' . $cart->last_name,

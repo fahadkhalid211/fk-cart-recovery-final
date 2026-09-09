@@ -80,8 +80,7 @@ final class CAR_Pro {
         // WooCommerce HPOS Compatibility Declaration
         add_action( 'before_woocommerce_init', [ $this, 'declare_hpos_compatibility' ] );
 
-        // Intercept the WordPress.org API lookup for "View Details" popup
-        // so it shows our plugin info instead of any same-slug WP.org listing.
+        // Filter plugin information for plugins.php details modal.
         add_filter( 'plugins_api', [ $this, 'plugin_info' ], 20, 3 );
     }
 

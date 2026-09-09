@@ -148,8 +148,7 @@ class CAR_Tracker {
         $cutoff = absint( get_option( 'car_cutoff_time', 60 ) );
         $time   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$cutoff} minutes" ) );
 
-        // LIMIT 100 prevents PHP timeouts on stores with massive backlogs. 
-        // The cron runs every 5 mins, so it will safely catch up.
+        // Process batch of pending carts
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $rows = $wpdb->get_results( $wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}car_abandoned_carts WHERE status = 'pending' AND created_at <= %s LIMIT 100",
@@ -191,8 +190,7 @@ class CAR_Tracker {
     }
 
     /**
-     * Safely retrieve the user's IP address.
-     * Handles comma-separated X-Forwarded-For headers and prevents DB truncation.
+     * Retrieve customer IP address.
      */
     private function get_ip() {
         $ip = '';
@@ -200,14 +198,14 @@ class CAR_Tracker {
         if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
             $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
         } elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-            // X-Forwarded-For can be a comma-separated list (client, proxy1, proxy2). Take the first one.
+            // Extract primary client IP if behind proxy
             $ips = explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) );
             $ip  = trim( $ips[0] );
         } elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
             $ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
         }
 
-        // Ensure it doesn't exceed the DB column length (VARCHAR 50)
+        // Limit to column length
         return substr( $ip, 0, 50 );
     }
 }

@@ -31,7 +31,7 @@ Cart Abandonment Recovery Pro helps WooCommerce store owners recover lost sales 
 
 1. Upload plugin folder to `/wp-content/plugins/`
 2. Activate via the WordPress Plugins menu
-3. Go to **Cart Recovery** in the admin sidebar
+3. Go to Cart Recovery in the admin sidebar
 4. Configure settings and create campaigns
 
 == Frequently Asked Questions ==

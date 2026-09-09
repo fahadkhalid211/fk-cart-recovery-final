@@ -11,7 +11,7 @@ class CAR_Recovery_Link {
         add_action( 'init',      [ $this, 'handle_tracking' ] );
     }
 
-    // ── URL generators ───────────────────────────────────────────────────────
+    // URL generators
     public static function generate( $cart_id ) {
         $token = wp_generate_password( 32, false );
         set_transient( 'car_recovery_' . $token, $cart_id, 7 * DAY_IN_SECONDS );
@@ -23,7 +23,7 @@ class CAR_Recovery_Link {
         return add_query_arg( [ 'car_unsub' => $token ], home_url( '/' ) );
     }
 
-    // ── Cart recovery (wp_loaded = WC session fully ready) ───────────────────
+    // Process cart recovery request
     public function process_recovery_request() {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
         if ( empty( $_GET['car_recover'] ) ) {
@@ -104,7 +104,7 @@ class CAR_Recovery_Link {
         exit;
     }
 
-    // ── Unsubscribe ──────────────────────────────────────────────────────────
+    // Unsubscribe
     public function handle_unsubscribe() {
         if ( empty( $_GET['car_unsub'] ) ) return; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
@@ -135,13 +135,13 @@ class CAR_Recovery_Link {
             $email
         ) );
 
-        // Redirect with a nice WooCommerce notice instead of using wp_die()
+        // Redirect to cart page with notice
         wc_add_notice( esc_html__( 'You have been successfully unsubscribed. You will no longer receive cart recovery emails.', 'fk-cart-recovery' ), 'success' );
         wp_safe_redirect( wc_get_cart_url() );
         exit;
     }
 
-    // ── Email open-tracking pixel ────────────────────────────────────────────
+    // Email open-tracking pixel
     public function handle_tracking() {
         if ( empty( $_GET['car_tk'] ) ) return; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 

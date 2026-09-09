@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FK Cart Recovery Pro - Documentation</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #eef2ff;
+            --secondary: #0ea5e9;
+            --dark: #0f172a;
+            --gray-900: #1e293b;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-400: #94a3b8;
+            --gray-200: #e2e8f0;
+            --gray-100: #f1f5f9;
+            --gray-50: #f8fafc;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --sidebar-width: 280px;
+            --radius: 8px;
+            --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--gray-700);
+            background-color: var(--white);
+            line-height: 1.65;
+            font-size: 15px;
+        }
+
+        .doc-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .doc-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--gray-50);
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            padding: 24px 16px;
+            z-index: 100;
+        }
+
+        .doc-brand {
+            padding: 0 12px 20px 12px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 20px;
+        }
+
+        .doc-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            letter-spacing: -0.02em;
+        }
+
+        .doc-brand .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background: var(--primary-light);
+            color: var(--primary);
+            margin-top: 6px;
+        }
+
+        .nav-group {
+            margin-bottom: 20px;
+        }
+
+        .nav-heading {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--gray-400);
+            font-weight: 700;
+            padding: 6px 12px;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 7px 12px;
+            font-size: 13.5px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-item a:hover {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .nav-item a.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        .doc-main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            max-width: 960px;
+            padding: 48px 48px 100px 48px;
+        }
+
+        section {
+            margin-bottom: 56px;
+            scroll-margin-top: 40px;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gray-900);
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 28px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--gray-700);
+        }
+
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            background-color: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--gray-900);
+            border: 1px solid var(--gray-200);
+        }
+
+        pre {
+            background-color: var(--gray-900);
+            color: #e2e8f0;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: transparent;
+            border: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-200);
+        }
+
+        th {
+            background-color: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--gray-50);
+        }
+
+        .callout {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            border-left: 4px solid var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .callout.callout-info {
+            border-left-color: var(--secondary);
+            background-color: #f0f9ff;
+        }
+
+        .callout.callout-success {
+            border-left-color: var(--success);
+            background-color: #f0fdf4;
+        }
+
+        .callout.callout-warning {
+            border-left-color: var(--warning);
+            background-color: #fffbeb;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--gray-900);
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 18px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 13.5px;
+            color: var(--gray-600);
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 860px) {
+            .doc-sidebar {
+                display: none;
+            }
+            .doc-main {
+                margin-left: 0;
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="doc-container">
+    <aside class="doc-sidebar">
+        <div class="doc-brand">
+            <h1>FK Cart Recovery</h1>
+            <span class="badge">Version 1.0.0</span>
+        </div>
+
+        <nav>
+            <div class="nav-group">
+                <div class="nav-heading">Getting Started</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#overview" class="active">Overview</a></li>
+                    <li class="nav-item"><a href="#requirements">Requirements</a></li>
+                    <li class="nav-item"><a href="#installation">Installation</a></li>
+                    <li class="nav-item"><a href="#quick-start">Quick Start</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-heading">Channels</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#channel-email">Email Setup</a></li>
+                    <li class="nav-item"><a href="#channel-whatsapp">WhatsApp Setup</a></li>
+                    <li class="nav-item"><a href="#channel-sms">SMS Setup</a></li>
+                    <li class="nav-item"><a href="#channel-telegram">Telegram Setup</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-heading">Features</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#campaigns">Campaigns & Logic</a></li>
+                    <li class="nav-item"><a href="#coupons">Dynamic Coupons</a></li>
+                    <li class="nav-item"><a href="#recovery-links">1-Click Recovery</a></li>
+                    <li class="nav-item"><a href="#analytics">Reports & Analytics</a></li>
+                    <li class="nav-item"><a href="#gdpr">GDPR & Compliance</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-heading">Support</div>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#placeholders">Template Tags</a></li>
+                    <li class="nav-item"><a href="#faq">Frequently Asked Questions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="doc-main">
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p><strong>FK Cart Recovery Pro</strong> is a complete multi-channel WooCommerce cart abandonment recovery solution. It captures abandoned carts in real-time as customers type their information on checkout, and automatically triggers personalized recovery sequences across <strong>Email</strong>, <strong>WhatsApp</strong>, <strong>SMS</strong>, and <strong>Telegram</strong>.</p>
+
+            <div class="grid-cards">
+                <div class="card">
+                    <div class="card-title">Multi-Channel Recovery</div>
+                    <p>Dispatch automated recovery messages via Email, WhatsApp (UltraMsg, Twilio, WhatsApp Cloud API), SMS (Twilio, Vonage), and Telegram.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Dynamic Coupons</div>
+                    <p>Generate individual, single-use, auto-expiring WooCommerce discount coupons tied directly to recovery campaigns.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">1-Click Restoration</div>
+                    <p>Direct customers back to checkout with all products, quantities, and coupons pre-loaded securely via encrypted tokens.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">In-Depth Analytics</div>
+                    <p>Track recovery rates, total revenue recovered, open rates, click-through rates, and export CSV reports effortlessly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="requirements">
+            <h2>System Requirements</h2>
+            <p>To run FK Cart Recovery Pro seamlessly, ensure your hosting environment meets the following specifications:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Recommended</th>
+                        <th>Minimum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>WordPress Version</td>
+                        <td>6.0 or higher</td>
+                        <td>5.8</td>
+                    </tr>
+                    <tr>
+                        <td>WooCommerce Version</td>
+                        <td>7.0 or higher</td>
+                        <td>5.0</td>
+                    </tr>
+                    <tr>
+                        <td>PHP Version</td>
+                        <td>8.0, 8.1, or 8.2</td>
+                        <td>7.4</td>
+                    </tr>
+                    <tr>
+                        <td>MySQL Version</td>
+                        <td>5.7 or higher / MariaDB 10.3+</td>
+                        <td>5.6</td>
+                    </tr>
+                    <tr>
+                        <td>Cron System</td>
+                        <td>Server Cron or WP-Cron enabled</td>
+                        <td>WP-Cron</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            <p>You can install the plugin either via the WordPress admin dashboard or via FTP / SFTP.</p>
+
+            <h3>Method 1: WordPress Admin Upload (Recommended)</h3>
+            <ol>
+                <li>Log in to your WordPress Admin dashboard.</li>
+                <li>Navigate to <strong>Plugins &rarr; Add New</strong>.</li>
+                <li>Click on the <strong>Upload Plugin</strong> button at the top of the page.</li>
+                <li>Choose the <code>fk-cart-recovery.zip</code> archive and click <strong>Install Now</strong>.</li>
+                <li>Once installed, click <strong>Activate Plugin</strong>.</li>
+            </ol>
+
+            <h3>Method 2: Manual Upload via FTP</h3>
+            <ol>
+                <li>Extract the contents of <code>fk-cart-recovery.zip</code> on your local computer.</li>
+                <li>Connect to your server using an FTP client (FileZilla, Cyberduck, etc.).</li>
+                <li>Upload the unzipped <code>fk-cart-recovery</code> directory to <code>/wp-content/plugins/</code>.</li>
+                <li>Go to <strong>Plugins &rarr; Installed Plugins</strong> in WordPress admin and click <strong>Activate</strong>.</li>
+            </ol>
+        </section>
+
+        <section id="quick-start">
+            <h2>Quick Start Guide</h2>
+            <ol>
+                <li>After activation, a new menu item labeled <strong>Cart Recovery</strong> will appear in your admin sidebar.</li>
+                <li>Navigate to <strong>Cart Recovery &rarr; Settings</strong>.</li>
+                <li>Set the <strong>Cart Abandonment Cut-off Time</strong> (default is 60 minutes). If a customer leaves the checkout page without completing their purchase, their cart will be classified as abandoned after this interval.</li>
+                <li>Switch to the <strong>Campaigns</strong> tab and review the pre-configured recovery sequence or create new ones.</li>
+                <li>Test a sample recovery email or notification to verify deliverability.</li>
+            </ol>
+        </section>
+
+        <section id="channel-email">
+            <h2>Email Channel Setup</h2>
+            <p>Email is the foundational recovery channel. FK Cart Recovery Pro includes a responsive email layout with custom branding, logo support, item tables, and open/click tracking.</p>
+
+            <h3>Key Settings:</h3>
+            <ul>
+                <li><strong>From Name:</strong> The sender name displayed in customer inboxes (e.g., Your Store Name).</li>
+                <li><strong>From Email:</strong> The verified sender address from your domain.</li>
+                <li><strong>Reply-To:</strong> Email address where customer responses will be sent.</li>
+                <li><strong>Email Logo:</strong> Upload your store logo to display at the header of recovery emails.</li>
+                <li><strong>Open & Click Tracking:</strong> Automatically inserts an invisible tracking pixel and wraps recovery links to measure engagement.</li>
+            </ul>
+
+            <div class="callout callout-info">
+                <div class="callout-title">Deliverability Tip</div>
+                <p>For optimal inbox placement, use a transactional SMTP service (e.g. SendGrid, Mailgun, Postmark, or Amazon SES) with proper SPF, DKIM, and DMARC DNS records configured on your domain.</p>
+            </div>
+        </section>
+
+        <section id="channel-whatsapp">
+            <h2>WhatsApp Channel Setup</h2>
+            <p>Reach customers directly on WhatsApp for open rates exceeding 90%. The plugin supports three industry-standard providers:</p>
+
+            <h3>1. UltraMsg</h3>
+            <p>UltraMsg provides simple QR-code based WhatsApp gateway integration.</p>
+            <ul>
+                <li>Create an account at UltraMsg.com and generate an Instance.</li>
+                <li>Enter your <strong>Instance ID</strong> and <strong>Token</strong> in <strong>Cart Recovery &rarr; Settings &rarr; WhatsApp</strong>.</li>
+            </ul>
+
+            <h3>2. Twilio WhatsApp</h3>
+            <p>Enterprise-grade WhatsApp messaging via the Twilio API.</p>
+            <ul>
+                <li>Obtain your <strong>Account SID</strong> and <strong>Auth Token</strong> from the Twilio Console.</li>
+                <li>Enter your approved Twilio WhatsApp Sender number (e.g. <code>whatsapp:+14155238886</code>).</li>
+            </ul>
+
+            <h3>3. WhatsApp Cloud API (Meta Official)</h3>
+            <p>Direct integration with Meta's official WhatsApp Business Platform.</p>
+            <ul>
+                <li>Create an app in the Meta for Developers portal.</li>
+                <li>Enter your <strong>Phone Number ID</strong> and <strong>Permanent Access Token</strong>.</li>
+            </ul>
+        </section>
+
+        <section id="channel-sms">
+            <h2>SMS Channel Setup</h2>
+            <p>Send concise SMS reminders with direct 1-click cart restoration links. The plugin integrates natively with:</p>
+
+            <h3>1. Twilio SMS</h3>
+            <ul>
+                <li><strong>Account SID:</strong> Your Twilio account identifier.</li>
+                <li><strong>Auth Token:</strong> Your Twilio API authentication token.</li>
+                <li><strong>From Phone Number:</strong> Your purchased Twilio phone number or Alphanumeric Sender ID.</li>
+            </ul>
+
+            <h3>2. Vonage (formerly Nexmo)</h3>
+            <ul>
+                <li><strong>API Key:</strong> Your Vonage dashboard API key.</li>
+                <li><strong>API Secret:</strong> Your Vonage dashboard secret token.</li>
+                <li><strong>From Name / Number:</strong> Approved sender ID.</li>
+            </ul>
+        </section>
+
+        <section id="channel-telegram">
+            <h2>Telegram Channel Setup</h2>
+            <p>Recover carts via Telegram Bot messaging with verified account linking.</p>
+
+            <h3>Step-by-Step Telegram Setup:</h3>
+            <ol>
+                <li>Open Telegram and search for <code>@BotFather</code>.</li>
+                <li>Send <code>/newbot</code> and follow the instructions to name your bot.</li>
+                <li>Copy the provided <strong>Bot Token</strong> and paste it into <strong>Cart Recovery &rarr; Settings &rarr; Telegram</strong>.</li>
+                <li>Click <strong>Register Webhook</strong> to automatically configure the Telegram callback URL.</li>
+            </ol>
+            <div class="callout callout-success">
+                <div class="callout-title">Secure Verification</div>
+                <p>To ensure customer privacy, when a customer starts the bot, a verification link is sent to their registered email before their Telegram account is linked.</p>
+            </div>
+        </section>
+
+        <section id="campaigns">
+            <h2>Campaigns & Automation Engine</h2>
+            <p>Build staged recovery sequences tailored to customer behavior.</p>
+
+            <h3>Recommended Campaign Schedule</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sequence</th>
+                        <th>Delay</th>
+                        <th>Channel</th>
+                        <th>Objective</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Step 1: Friendly Reminder</td>
+                        <td>30 - 60 minutes</td>
+                        <td>Email / WhatsApp</td>
+                        <td>Gentle reminder asking if they encountered technical difficulties or need assistance.</td>
+                    </tr>
+                    <tr>
+                        <td>Step 2: Urgency / Social Proof</td>
+                        <td>24 hours</td>
+                        <td>Email</td>
+                        <td>Highlight item popularity, reviews, and stock scarcity.</td>
+                    </tr>
+                    <tr>
+                        <td>Step 3: Incentive Offer</td>
+                        <td>48 - 72 hours</td>
+                        <td>Email / SMS</td>
+                        <td>Offer an exclusive dynamic discount code (e.g. 10% off) to seal the purchase.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Rule Conditions</h3>
+            <p>You can filter which carts trigger specific campaigns using rule conditions:</p>
+            <ul>
+                <li><strong>Cart Total:</strong> Only trigger if cart subtotal is greater than, less than, or equal to a target amount.</li>
+                <li><strong>Item Count:</strong> Target shoppers with multiple items in their basket.</li>
+                <li><strong>User Role:</strong> Differentiate campaigns between Guests and Registered Customers.</li>
+            </ul>
+        </section>
+
+        <section id="coupons">
+            <h2>Dynamic Discount Coupons</h2>
+            <p>FK Cart Recovery Pro allows you to automatically generate unique, single-use WooCommerce discount coupons for each recovery email or message.</p>
+
+            <h3>Configuration Options:</h3>
+            <ul>
+                <li><strong>Discount Type:</strong> Percentage discount (e.g., 10%) or Fixed Cart discount (e.g., $15).</li>
+                <li><strong>Coupon Expiry:</strong> Set how many hours or days the coupon remains valid before expiring automatically.</li>
+                <li><strong>Single Use Restriction:</strong> Coupons are automatically restricted for single-use to prevent sharing on coupon aggregator websites.</li>
+                <li><strong>Auto-Application:</strong> When the customer clicks the recovery link, the coupon is applied to their checkout automatically without manual entry.</li>
+            </ul>
+        </section>
+
+        <section id="recovery-links">
+            <h2>1-Click Recovery Links</h2>
+            <p>Every recovery message contains a personalized recovery link generated using a cryptographically secure token.</p>
+            <ul>
+                <li><strong>Session Restoration:</strong> Reconstructs the customer's exact cart items and quantities.</li>
+                <li><strong>Auto Login (Registered Users):</strong> For returning customers, optionally authenticates their session securely.</li>
+                <li><strong>Form Pre-filling:</strong> Pre-populates checkout fields with the captured customer name, email, phone, and address.</li>
+            </ul>
+        </section>
+
+        <section id="analytics">
+            <h2>Reports & Analytics</h2>
+            <p>Monitor your recovery funnel directly from the <strong>Cart Recovery &rarr; Analytics</strong> dashboard.</p>
+            <ul>
+                <li><strong>Recoverable Revenue:</strong> Total value of currently abandoned carts.</li>
+                <li><strong>Recovered Revenue:</strong> Total monetary value of completed orders generated through recovery links.</li>
+                <li><strong>Recovery Rate:</strong> Percentage of abandoned sessions that converted into completed orders.</li>
+                <li><strong>Channel Breakdown:</strong> Compare conversion rates across Email, WhatsApp, SMS, and Telegram.</li>
+                <li><strong>CSV Export:</strong> Download comprehensive reports for accounting or third-party CRM integration.</li>
+            </ul>
+        </section>
+
+        <section id="gdpr">
+            <h2>GDPR & Privacy Compliance</h2>
+            <p>Protect customer privacy and maintain full compliance with international privacy regulations:</p>
+            <ul>
+                <li><strong>Checkout Consent Checkbox:</strong> Add an optional or mandatory consent checkbox at checkout before capturing guest data.</li>
+                <li><strong>Automatic Data Pruning:</strong> Automatically delete recovered and abandoned cart records after a configurable number of days (e.g. 30, 60, or 90 days).</li>
+                <li><strong>WordPress Privacy Tools Integration:</strong> Fully integrated with WordPress core Personal Data Export and Personal Data Erasure tools.</li>
+            </ul>
+        </section>
+
+        <section id="placeholders">
+            <h2>Template Placeholders</h2>
+            <p>Use these template tags inside your email, WhatsApp, SMS, or Telegram campaign bodies. They will be dynamically replaced with real data at dispatch time:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Description</th>
+                        <th>Supported Channels</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>{customer_name}</code></td>
+                        <td>Customer first name or full name</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{site_name}</code></td>
+                        <td>Your WordPress website title</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{cart_total}</code></td>
+                        <td>Formatted total price of abandoned cart</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{cart_items}</code></td>
+                        <td>Clean text list of products in the cart</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{cart_items_table}</code></td>
+                        <td>Styled HTML table with product thumbnails, prices, and quantities</td>
+                        <td>Email</td>
+                    </tr>
+                    <tr>
+                        <td><code>{recovery_link}</code></td>
+                        <td>1-click cart restoration URL</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{coupon_code}</code></td>
+                        <td>Generated unique coupon code</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{coupon_discount}</code></td>
+                        <td>Discount value and percentage display</td>
+                        <td>All Channels</td>
+                    </tr>
+                    <tr>
+                        <td><code>{unsubscribe_link}</code></td>
+                        <td>One-click opt-out link for customers</td>
+                        <td>Email</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="faq">
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does this plugin require WooCommerce?</h3>
+            <p>Yes. FK Cart Recovery Pro is specifically designed for WooCommerce and requires WooCommerce 5.0 or higher.</p>
+
+            <h3>How does cart tracking work?</h3>
+            <p>When customers enter their email or phone number on the checkout page, the plugin captures the details asynchronously via AJAX. If the order is not placed within the cut-off time (e.g., 60 minutes), the cart is flagged as abandoned.</p>
+
+            <h3>Are external messaging services required?</h3>
+            <p>For Email recovery, the plugin uses standard WordPress / SMTP mailing and requires no paid external service. For WhatsApp or SMS, you will need an account with one of the supported providers (UltraMsg, Twilio, Vonage, or Meta).</p>
+
+            <h3>Is the plugin compatible with High-Performance Order Storage (HPOS)?</h3>
+            <p>Yes. FK Cart Recovery Pro is fully compatible with WooCommerce High-Performance Order Storage (HPOS) and custom cart tables.</p>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var links = document.querySelectorAll('.nav-item a');
+        var sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', function() {
+            var current = '';
+            sections.forEach(function(section) {
+                var sectionTop = section.offsetTop - 80;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            links.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
